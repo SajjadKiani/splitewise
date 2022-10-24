@@ -77,9 +77,30 @@ async function remove(id){
   return {message};
 }
 
+async function createUser(reqBody){
+  const result = await db.query(
+    `INSERT INTO User 
+    (username, password) 
+    VALUES 
+    (?, ?)`, 
+    [
+      reqBody.username, reqBody.password,
+    ]
+  );
+
+  let message = 'Error in creating user';
+
+  if (result.affectedRows) {
+    message = 'user created successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
   create,
   update,
-  remove
+  remove,
+  createUser
 }

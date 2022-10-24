@@ -1,11 +1,11 @@
-const env = process.env;
+require('dotenv').config()
+
 const fs = require('fs');
 const db = {
-    host: env.DB_HOST,
-    user: env.DB_USER,
-    password: env.DB_PASSWORD,
-    database: env.DB_NAME || 'web-scarping',
-    port: env.DB_PORT || 3306,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 };
 
 module.exports = db;
