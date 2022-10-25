@@ -36,9 +36,19 @@ async function remove(req, res, next) {
   }
 }
 
+async function createUser(req, res, next) {
+  try {
+    res.json(await service.createUser(req.body));
+  } catch (err) {
+    console.error(`Error while creating creating user`, err.message);
+    next(err);
+  }
+}
+
 module.exports = {
   get,
   create,
   update,
-  remove
+  remove,
+  createUser
 };

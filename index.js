@@ -1,7 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+const multer  = require('multer')
+const upload = multer()
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const routes = require('./src/routes/index');
 
 const logger = ( req, res, next) => {
@@ -10,15 +12,15 @@ const logger = ( req, res, next) => {
   next()
 }
 
-app.use(bodyParser.json());
+app.use(upload.none());
 app.use(logger);
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true,
+//   })
+// );
 
-app.use('/',express.static('src/view'))
+app.use('/',express.static('src/view/'))
 
 app.use('/app', routes);
 

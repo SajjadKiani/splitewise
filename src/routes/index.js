@@ -14,4 +14,7 @@ router.put('/:id', controller.update);
 /* DELETE  */
 router.delete('/:id', controller.remove);
 
+/* CREATE USER */
+router.post('/signup', controller.createUser);
+
 module.exports = router;
