@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap -->
+    <link href="./statics/bootstrap.min.css" rel="stylesheet">
+    <script src="./statics//bootstrap.bundle.min.js"></script>
+
+    <title>Login</title>
+</head>
+<body>
+    <div class="h-100 d-flex flex-grow-1 justify-content-center align-items-center">
+        <form id="login-form" class=" col-md-10 col-lg-3">
+            <div class="card">            
+                <div class="card-header">Login</div>
+                <div class="card-body">
+                    <div class="alert" id="alert"></div>
+                    <div class="">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" name="username" id="username">
+                    </div>
+                    <div class="mt-2">
+                        <label for="cost">Password</label>
+                        <input type="text" class="form-control" name="password" id="password">
+                    </div>
+                    
+                </div>
+                <div class="footer p-3 d-flex justify-content-end">
+                    <input type="submit" class="btn btn-primary" value="Login">
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('login-form').onsubmit = (e) => {
+            e.preventDefault()
+            const alert = document.getElementById('alert')
+            fetch(`/app/login`,{
+                    method: 'POST',
+                    body: new FormData(e.target),
+                })
+                    .then((response) => {
+                        if(!response.ok)
+                            return response.text().then(text => { throw new Error(text) })
+                        else
+                            return response.json()
+                    })
+                    .then((res) => {
+                        alert.classList.add('alert-success')
+                        alert.classList.remove('alert-danger')
+                        alert.textContent = res['message']['message']
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        alert.classList.add('alert-danger')
+                        alert.classList.remove('alert-success')
+                        alert.textContent = JSON.parse(err.toString().replace('Error: ','')).message
+                        console.log(err);
+                    })
+        }
+    </script>
+</body>
+</html>

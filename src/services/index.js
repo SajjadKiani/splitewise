@@ -1,6 +1,8 @@
 const db = require('./db.service');
 const helper = require('../utils/helper.util');
 const config = require('../configs/general.config');
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt')
 
 async function getMultiple(page = 1){
   const offset = helper.getOffset(page, config.listPerPage);
@@ -78,13 +80,17 @@ async function remove(id){
 }
 
 async function createUser(reqBody){
+
+  const salt = await bcrypt.genSalt(10);
+  const pHash = await bcrypt.hash(reqBody.password.toString(), salt)
+
   const result = await db.query(
     `INSERT INTO User 
     (username, password) 
     VALUES 
     (?, ?)`, 
     [
-      reqBody.username, reqBody.password,
+      reqBody.username, pHash,
     ]
   );
 
@@ -97,10 +103,34 @@ async function createUser(reqBody){
   return {message};
 }
 
+async function loginUser(reqBody){
+  const result = await db.query(
+    `SELECT * FROM User;`
+  );
+
+  let message = ''
+
+  const user = result.find((u) => u.username === reqBody.username)
+
+  if (user) {
+    const checkPassword = await bcrypt.compare(reqBody.password, result[0].password)
+    if (checkPassword) {
+      const token = jwt.sign({id: user.id, username: user.username}, 'mysecretkey')
+      message = {message: 'login successfully!', username: reqBody.username,token: token}
+    } else 
+      throw new Error ('wrong password!')
+  } else
+    throw new Error ('user not found!')
+
+
+  return {message};
+}
+
 module.exports = {
   getMultiple,
   create,
   update,
   remove,
-  createUser
+  createUser,
+  loginUser,
 }

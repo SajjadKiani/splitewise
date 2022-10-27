@@ -40,7 +40,16 @@ async function createUser(req, res, next) {
   try {
     res.json(await service.createUser(req.body));
   } catch (err) {
-    console.error(`Error while creating creating user`, err.message);
+    console.error(`Error while creating user`, err.message);
+    next(err);
+  }
+}
+
+async function loginUser(req, res, next) {
+  try {
+    res.json(await service.loginUser(req.body));
+  } catch (err) {
+    console.error(`Error while logedin user`, err.message);
     next(err);
   }
 }
@@ -50,5 +59,6 @@ module.exports = {
   create,
   update,
   remove,
-  createUser
+  createUser,
+  loginUser
 };
