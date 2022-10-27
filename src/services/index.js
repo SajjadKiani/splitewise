@@ -22,21 +22,19 @@ async function getMultiple(page = 1){
 
 async function create(reqBody){
   const result = await db.query(
-    `INSERT INTO programming_languages 
-    (name, released_year, githut_rank, pypl_rank, tiobe_rank) 
+    `INSERT INTO Cost 
+    (title, description, date , userId) 
     VALUES 
-    (?, ?, ?, ?, ?)`, 
+    (?, ?, ?, ?)`, 
     [
-      reqBody.name, reqBody.released_year,
-      reqBody.githut_rank, reqBody.pypl_rank,
-      reqBody.tiobe_rank
+      reqBody.title, reqBody.description, new Date().toISOString().slice(0, 10), reqBody.userId
     ]
   );
 
-  let message = 'Error in creating programming language';
+  let message = 'Error in creating Cost';
 
   if (result.affectedRows) {
-    message = 'Programming language created successfully';
+    message = 'Cost created successfully';
   }
 
   return {message};

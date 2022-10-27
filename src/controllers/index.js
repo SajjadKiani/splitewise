@@ -13,7 +13,7 @@ async function create(req, res, next) {
   try {
     res.json(await service.create(req.body));
   } catch (err) {
-    console.error(`Error while creating programming language`, err.message);
+    console.error(`Error while creating cost`, err.message);
     next(err);
   }
 }

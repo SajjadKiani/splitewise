@@ -7,13 +7,13 @@ const auth = require('../middlewares/logging.middleware')
 router.get('/',auth, controller.get);
   
 /* POST  */
-router.post('/', controller.create);
+router.post('/',auth, controller.create);
 
 /* PUT  */
-router.put('/:id', controller.update);
+router.put('/:id',auth, controller.update);
 
 /* DELETE  */
-router.delete('/:id', controller.remove);
+router.delete('/:id',auth, controller.remove);
 
 /* CREATE USER */
 router.post('/signup', controller.createUser);
