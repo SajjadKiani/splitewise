@@ -3,8 +3,9 @@ const express = require('express');
 const multer  = require('multer')
 const upload = multer()
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3003;
 const routes = require('./src/routes/index');
+const path = require('path')
 
 const logger = ( req, res, next) => {
   const date = new Date()
@@ -21,6 +22,9 @@ app.use(logger);
 // );
 
 app.use('/',express.static('src/view/'))
+app.use((req , res , err) => {
+  res.status(404).sendFile(path.join(__dirname, '/src/view/404.html'))
+})
 
 app.use('/app', routes);
 
